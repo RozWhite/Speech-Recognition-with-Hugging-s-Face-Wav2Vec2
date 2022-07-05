@@ -1,0 +1,5 @@
+PyAudio
+transformers==4.6.0
+torch==1.7.1
+pydub==0.25.1
+ffmpeg
