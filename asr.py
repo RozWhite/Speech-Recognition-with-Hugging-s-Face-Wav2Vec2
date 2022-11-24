@@ -14,15 +14,20 @@ with sr.Microphone(sample_rate=16000) as source:
     print("Please speak now")
     while True:
         audio=recognizer.listen(source)
+        print(type(audio))
         data = io.BytesIO(audio.get_wav_data())
+        print(type(data))
         clip = AudioSegment.from_file(data)
+        print(type(clip))
         tensor = torch.FloatTensor(clip.get_array_of_samples()) # Convert array to tensor
         
         inputs = tokenizer(tensor, sampling_rate=16000, return_tensors="pt", padding="longest").input_values
         logits = model(inputs).logits # Forward it to the model
         tokens = torch.argmax(logits, dim=-1) # Decode it
-        text = tokenizer.batch_decode(tokens)
+        #text = tokenizer.batch_decode(tokens)
+        text = tokenizer.batch_decode(tokens)[0]
         print("You said: ", str(text).lower())
+ 
     
 
     
